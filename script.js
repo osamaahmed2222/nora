@@ -32,11 +32,13 @@ const textContext = textCanvas.getContext("2d");
 if (!textContext) {
   throw new Error("Unable to create a canvas context for the particle text.");
 }
-textContext.font = "bold 200px Arial";
+const fontSize = 200;
+textContext.font = `bold ${fontSize}px Arial`;
 textContext.textAlign = "center";
 textContext.textBaseline = "middle";
 textContext.fillStyle = "#000";
-textContext.fillText("Nora", textCanvas.width / 2, textCanvas.height / 2);
+const name = "Nora";
+textContext.fillText(name, textCanvas.width / 2, textCanvas.height / 2);
 
 const imageData = textContext.getImageData(0, 0, textCanvas.width, textCanvas.height);
 const vertices = [];
@@ -68,6 +70,15 @@ particles.position.x -= 600 / 2;
 particles.position.y += 552 / 2;
 scene.add(particles);
 
+function resizeParticles() {
+  const viewHeight = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  const viewWidth = viewHeight * camera.aspect;
+  const nameWidth = textContext.measureText(name).width;
+  const scale = Math.min(1, (viewWidth * 0.9) / nameWidth, (viewHeight * 0.7) / fontSize);
+  particles.scale.setScalar(scale);
+}
+resizeParticles();
+
 gsap.fromTo(scene.rotation, {
   y: -0.2
 }, {
@@ -91,6 +102,7 @@ function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  resizeParticles();
 }
 window.addEventListener("resize", onWindowResize, false);
 
