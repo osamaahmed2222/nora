@@ -74,7 +74,10 @@ function resizeParticles() {
   const viewHeight = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
   const viewWidth = viewHeight * camera.aspect;
   const nameWidth = textContext.measureText(name).width;
-  const scale = Math.min(1, (viewWidth * 0.9) / nameWidth, (viewHeight * 0.7) / fontSize);
+  const scale = Math.min(
+    (viewWidth * 0.9) / nameWidth,
+    (viewHeight * 0.7) / fontSize
+  );
   particles.scale.setScalar(scale);
   particles.position.set(
     -textCanvas.width * scale / 2,
