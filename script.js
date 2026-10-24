@@ -76,6 +76,11 @@ function resizeParticles() {
   const nameWidth = textContext.measureText(name).width;
   const scale = Math.min(1, (viewWidth * 0.9) / nameWidth, (viewHeight * 0.7) / fontSize);
   particles.scale.setScalar(scale);
+  particles.position.set(
+    -textCanvas.width * scale / 2,
+    textCanvas.height * scale / 2,
+    0
+  );
 }
 resizeParticles();
 
